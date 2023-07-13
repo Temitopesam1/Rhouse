@@ -1,9 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import  Response
 from rest_framework.views import APIView
 from .utils import get_tokens_for_user
@@ -17,7 +15,7 @@ class ApartmentList(APIView):
     """
     List all apartments, or create a new apartment.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 
     def get(self, request, format=None):
@@ -25,8 +23,6 @@ class ApartmentList(APIView):
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data)
     
-    # def perform_create(self, serializer):
-    #     serializer.save(creator=self.request.user.id)
 
     def post(self, request, format=None):
         data = {
@@ -37,7 +33,6 @@ class ApartmentList(APIView):
             'creator': request.user.id
         }
         serializer = ApartmentSerializer(data=data)
-        print(request.data, request.user.id)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -49,7 +44,7 @@ class ApartmentDetail(APIView):
     """
     Retrieve, update or delete an apartment instance.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_object(self, pk):
         try:
@@ -64,7 +59,7 @@ class ApartmentDetail(APIView):
 
     def put(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        serializer = ApartmentSerializer(snippet, data=request.data)
+        serializer = ApartmentSerializer(snippet, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -80,10 +75,7 @@ class LandList(APIView):
     """
     List all lands, or create a new land.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-
-    def perform_create(self, serializer):
-        serializer.save(creator=self.request.user.id)
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get(self, request, format=None):
         lands = Land.objects.all()
@@ -92,7 +84,14 @@ class LandList(APIView):
     
 
     def post(self, request, format=None):
-        serializer = LandSerializer(data=request.data)
+        data = {
+            'size': request.data.get('size'),
+            'description': request.data.get('description'),
+            'location': request.data.get('location'),
+            'price': request.data.get('price'),
+            'creator': request.user.id
+        }
+        serializer = LandSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -105,7 +104,7 @@ class LandDetail(APIView):
     """
     Retrieve, update or delete a land instance.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_object(self, pk):
         try:
@@ -120,7 +119,7 @@ class LandDetail(APIView):
 
     def put(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        serializer = LandSerializer(snippet, data=request.data)
+        serializer = LandSerializer(snippet, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -143,6 +142,7 @@ class RegistrationView(APIView):
 
       
 class LoginView(APIView):
+    permission_classes = [AllowAny, ]
     def post(self, request):
         if 'username' not in request.data or 'password' not in request.data:
             return Response({'msg': 'Credentials missing'}, status=status.HTTP_400_BAD_REQUEST)
@@ -164,7 +164,7 @@ class LogoutView(APIView):
 
       
 class ResetPasswordView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsAuthenticated, ]
 
     def post(self, request):
         serializer = PasswordResetSerializer(context={'request': request}, data=request.data)

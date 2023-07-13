@@ -20,7 +20,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
 
 
 class LandSerializer(serializers.ModelSerializer):
-    creator = serializers.ReadOnlyField(source='creator.username')
+    # creator = serializers.ReadOnlyField(source='creator.username')
     class Meta:
         model = Land
         fields = ["size", "description", "created_at", "price", "creator", "location"]
