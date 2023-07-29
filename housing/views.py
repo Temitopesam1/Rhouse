@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import  Response
 from rest_framework.views import APIView
 from .utils import get_tokens_for_user
@@ -24,20 +24,28 @@ class ApartmentList(APIView):
         return Response(serializer.data)
     
 
-    def post(self, request, format=None):
-        data = {
-            'title': request.data.get('title'),
-            'description': request.data.get('description'),
-            'location': request.data.get('location'),
-            'price': request.data.get('price'),
-            'creator': request.user.id
-        }
-        serializer = ApartmentSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        apartment_data = request.data.copy()
+        images_data = apartment_data.pop('images', [])
 
+        # Create the apartment object
+        apartment_data["creator"] = request.user.id
+        apartment_serializer = ApartmentSerializer(data=apartment_data)
+        if apartment_serializer.is_valid():
+            apartment = apartment_serializer.save()
+
+            # Create associated images
+            for image_data in images_data:
+                image_data['apartment'] = apartment.id
+                image_serializer = ImageSerializer(data=image_data)
+                if image_serializer.is_valid():
+                    image_serializer.save()
+                else:
+                    # If there's an error with the image data, you may decide how to handle it
+                    return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(apartment_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(apartment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
 class ApartmentDetail(APIView):
@@ -68,7 +76,7 @@ class ApartmentDetail(APIView):
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
         snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Apartment entry and associated images deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 class LandList(APIView):
@@ -83,19 +91,28 @@ class LandList(APIView):
         return Response(serializer.data)
     
 
-    def post(self, request, format=None):
-        data = {
-            'size': request.data.get('size'),
-            'description': request.data.get('description'),
-            'location': request.data.get('location'),
-            'price': request.data.get('price'),
-            'creator': request.user.id
-        }
-        serializer = LandSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        land_data = request.data.copy()
+        images_data = land_data.pop('images', [])
+
+        # Create the land object
+        land_data["creator"] = request.user.id
+        land_serializer = LandSerializer(data=land_data)
+        if land_serializer.is_valid():
+            land = land_serializer.save()
+
+            # Create associated images
+            for image_data in images_data:
+                image_data['land'] = land.id
+                image_serializer = ImageSerializer(data=image_data)
+                if image_serializer.is_valid():
+                    image_serializer.save()
+                else:
+                    # If there's an error with the image data, you may decide how to handle it
+                    return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(land_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(land_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -128,7 +145,7 @@ class LandDetail(APIView):
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
         snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Land entry and associated images deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 class RegistrationView(APIView):

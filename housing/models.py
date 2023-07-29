@@ -37,12 +37,15 @@ class Land(models.Model):
     price = models.DecimalField(max_digits=19, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add = True, auto_now = False)
 
-class ApartmentImage(models.Model):
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, related_name='apartment_images')
-    image = models.ImageField(upload_to='images/apartment/%Y%M%D')
-    created_at = models.DateTimeField(auto_now_add = True, auto_now = False, blank = True)
 
-class LandImage(models.Model):
-    land = models.ForeignKey(Land, on_delete=models.CASCADE, related_name='land_images')
-    image = models.ImageField(upload_to='images/land/%Y%M%D')
-    created_at = models.DateTimeField(auto_now_add = True, auto_now = False, blank = True)
+class Image(models.Model):
+    # Common fields for both apartment and land images
+    image = models.ImageField(upload_to='images/%Y%M%D')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Add a foreign key to Apartment model
+    apartment = models.ForeignKey('Apartment', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    
+    # Add a foreign key to Land model
+    land = models.ForeignKey('Land', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+
