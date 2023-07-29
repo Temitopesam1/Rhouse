@@ -8,7 +8,6 @@ from .utils import get_tokens_for_user
 from .serializers import *
 from .models import *
 from .permissions import IsOwnerOrReadOnly
-from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -159,12 +158,6 @@ class RegistrationView(APIView):
                 return Response({"message": "Email is associated with a registered user."}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 serializer.save()
-                subject = 'Welcome to Rhouse!'
-                message = 'Thank you for registering on our website. We hope you enjoy your stay!'
-                from_email = 'abolarinwatemitope5@gmail.com'
-                recipient_list = [serializer.data["email"]]
-
-                send_mail(subject, message, from_email, recipient_list)
                 username = request.POST['username']
                 password = request.POST['password']
                 user = authenticate(request, username=username, password=password)
