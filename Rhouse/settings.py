@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import datetime
 import os
+# settings.py
+import certifi
+import ssl
+
+# Set the SSL certificate verification paths
+ssl._create_default_https_context = ssl._create_default_https_context(cafile=certifi.where())
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -144,13 +151,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # Update with your email host's port
+EMAIL_USE_TLS = True  # Set to False if using SSL
+EMAIL_HOST_USER = 'abolarinwatemitope5@gmail.com'
+EMAIL_HOST_PASSWORD = 'eltxiortunzicftx'
 
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# AUTH_PROFILE_MODULE = 'users.MyUser'
-
-# AUTH_USER_MODEL = 'users.MyUser'
 
 APPEND_SLASH=False

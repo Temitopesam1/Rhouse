@@ -8,6 +8,7 @@ from .utils import get_tokens_for_user
 from .serializers import *
 from .models import *
 from .permissions import IsOwnerOrReadOnly
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -153,8 +154,24 @@ class RegistrationView(APIView):
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            try:
+                user = User.objects.get(email=serializer.data["email"])
+                return Response({"message": "Email is associated with a registered user."}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                serializer.save()
+                subject = 'Welcome to Rhouse!'
+                message = 'Thank you for registering on our website. We hope you enjoy your stay!'
+                from_email = 'abolarinwatemitope5@gmail.com'
+                recipient_list = [serializer.data["email"]]
+
+                send_mail(subject, message, from_email, recipient_list)
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    auth_data = get_tokens_for_user(request.user)
+                    return Response({'msg': 'User Created Successfully!', **auth_data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
       
