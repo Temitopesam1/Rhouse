@@ -148,10 +148,30 @@ class LandList(APIView):
     """
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
-    def get(self, request, format=None):
-        lands = Land.objects.all()
-        serializer = LandSerializer(lands, many=True)
-        return Response(serializer.data)
+    def get(self, request):
+        queryset = Land.objects.all()
+        min_price = request.query_params.get('min_price', None)
+        max_price = request.query_params.get('max_price', None)
+        availability = request.query_params.get('availability', None)
+        location = request.query_params.get('location', None)
+        size = request.query_params.get('size', None)
+
+        if min_price and max_price:
+            queryset = queryset.filter(price__range=(min_price, max_price))
+        elif min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        elif max_price:
+            queryset = queryset.filter(price__lte=max_price)
+
+        if availability:
+            queryset = queryset.filter(availability=availability)
+        if location:
+            queryset = queryset.filter(location=location)
+        if size:
+            queryset = queryset.filter(size=size)
+
+        serializer = ApartmentSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
     def post(self, request):
