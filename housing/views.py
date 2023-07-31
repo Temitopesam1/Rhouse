@@ -1,8 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
-from rest_framework.response import  Response
 from rest_framework.views import APIView
 from .utils import get_tokens_for_user
 from .serializers import *
@@ -12,16 +10,15 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth import get_user_model
-from rest_framework.generics import UpdateAPIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.models import User
+from rest_framework.generics import UpdateAPIView, ListAPIView
+from rest_framework import status, filters
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth.models import User
 from .signals import password_reset_signal
 
+
+    
 class PasswordResetView(GenericAPIView):
     permission_classes = [IsAuthenticated, ]
     def post(self, request):
@@ -64,10 +61,30 @@ class ApartmentList(APIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 
-    def get(self, request, format=None):
-        apartments = Apartment.objects.all()
-        serializer = ApartmentSerializer(apartments, many=True)
-        return Response(serializer.data)
+    def get(self, request):
+        queryset = Apartment.objects.all()
+        min_price = request.query_params.get('min_price', None)
+        max_price = request.query_params.get('max_price', None)
+        availability = request.query_params.get('availability', None)
+        location = request.query_params.get('location', None)
+        title = request.query_params.get('title', None)
+
+        if min_price and max_price:
+            queryset = queryset.filter(price__range=(min_price, max_price))
+        elif min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        elif max_price:
+            queryset = queryset.filter(price__lte=max_price)
+
+        if availability:
+            queryset = queryset.filter(availability=availability)
+        if location:
+            queryset = queryset.filter(location=location)
+        if title:
+            queryset = queryset.filter(title=title)
+
+        serializer = ApartmentSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
     def post(self, request):
