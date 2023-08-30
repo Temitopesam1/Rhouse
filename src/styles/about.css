@@ -1,0 +1,39 @@
+.main-content .container{
+  Display: block;
+  padding: 0 15px;
+}
+
+.main-content .container h3{
+  Color: red;
+  Margin-bottom: 30px;
+  Text-align: center;
+}
+
+.main-content .container h4{
+  color: red;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.main-content .container p{
+  color: #3b3f46;
+  font-size: 15px;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.main-content .container ul{
+  margin-bottom: 40px;
+}
+
+.main-content .container ul li{
+  list-style: none;
+  margin-bottom: 15px;
+  font-size: 16px;
+  text-align: justify;
+  color: #3b3f46;
+}
+
+.main-content .container ul li span{
+  font-weight: 600;
+}

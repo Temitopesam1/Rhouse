@@ -1,0 +1,55 @@
+.main-content .container{
+  Display: block;
+  padding: 0 15px;
+}
+
+.main-content .container h3{
+  Color: red;
+  Margin-bottom: 30px;
+  Text-align: center;
+}
+
+.main-content .container p{
+  Margin-bottom: 10px;
+  Color: #3b3f46;
+  Opacity: 0.7;
+  Font-size: 15px;
+  Font-weight: 500;
+}
+
+.main-content .container p i{
+  Margin-right: 5px;
+}
+
+.form-group .name-el, 
+.form-group .email-el{
+  Width: 98%;
+  Padding: 5px 15px;
+  Margin-bottom: 20px;
+  Outline: 0;
+  Border: 1px solid #c3c3c3;
+  Background-color: transparent;
+  Font-size: 16px;
+}
+
+.form-group .contact-btn{
+  Background-color: red;
+  Border: 0;
+  Color: #fff;
+  Padding: 5px 20px;
+  Margin-top: 20px;
+  Margin-bottom: 20px;
+  Font-weight: 600;
+  cursor: pointer;
+}
+
+.form-group .text-content{
+  Resize: none;
+  Width: 98%;
+  Height: 100px;
+  Padding: 5px 15px;
+  Background-color: transparent;
+  Border: 1px solid #c3c3c3;
+  Outline: 0;
+  Font-size: 16px;
+}

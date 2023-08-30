@@ -1,0 +1,208 @@
+header{
+    Width: 100%;
+    Display: flex;
+    Align-items:center;
+    Justify-content: space-between;
+    Padding: 10px 5%;
+    Position: sticky;
+    Top: 0;
+    z-index: 100;
+    Background-color: #fff;
+    Box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+.menu-toggle{
+    font-weight: 700;
+    font-size: 30px;
+    display: none;
+    cursor: pointer;
+    
+}
+
+header .logo{
+    Font-size: 20px;
+    Font-weight: 600;
+}
+
+header .logo a{
+    Color: #000;
+}
+
+header .logo span,
+footer .logo span{
+    Font-size: 35px;
+    Margin-right: -3px;
+    Color: red;
+}
+
+
+nav{
+    Display: flex;
+    Align-items:center;
+}
+
+nav li{
+    List-style: none;
+    Padding: 0 10px;
+}
+
+nav li a{
+    Color: #000;
+}
+
+
+.search-bar-toggle img{
+    Width: 18px;
+    cursor: pointer;
+}
+
+.search-bar-container{
+    Position: fixed;
+    Top: 55px;
+    Width:100%;
+    Background-color: rgba(0, 0, 0, 0.8);
+    height: 0;
+    overflow: hidden;
+    Border-bottom: 0px solid #000;
+    Transition: all 0.5s;
+}
+
+.search-bar-wrap{
+    Display:flex;
+    Align-items: center;
+    Justify-content: center;
+    Border-radius: 30px;
+    Background-color: #fff;
+    Width: 500px;
+    Margin: 30px auto;
+    Padding: 5px;
+}
+.search-bar-wrap input{
+    Padding: 5px 15px;
+    Background-color: transparent;
+    Border: 0;
+    Outline: 0;
+    flex: 1;
+}
+
+::placeholder{
+    Font-size: 16px;
+}
+.search-bar-wrap img{
+    Background-color: transparent;
+    Padding: 5px 15px;
+    Border: 0;
+    
+}
+
+.search-bar-container-toggle{
+    min-height: 100px;
+    z-index: 1000;
+}
+
+
+
+.user-toggle{
+    Position: relative;
+   Width: 150px;
+   Border: 0px solid #5f9341;
+  Margin-left: 90px;
+  cursor: pointer;
+}
+
+.toggle-user-profile{
+    Position: absolute;
+    Right: 0;
+    Left: 0;
+    Top: 45px;
+    padding: 10px 0;
+    Background-color: #000;
+    display: none;
+    Transition: all 0.5s;
+    
+}
+
+
+.toggle-user-profile a{
+    display: block;
+    Color: #fff;
+    Padding: 0 10px 10px 10px;
+}
+
+.toggled-user-profile{
+    display: inline-block;
+}
+
+@media (max-width: 900px){
+    
+    header{
+        display: block;
+    }
+   .menu-toggle{
+       Float: left;
+       Margin-Right: 20px;
+       display: inline-block;
+       Width: 30px;
+   }
+  
+  header .logo{
+       display: inline-block;
+       Width: 70%;
+       
+   }
+
+   header .logo{
+       font-size: 18px;
+       text-align: center;
+   }
+
+   header .logo span,
+   footer .logo span{
+       font-size: 25px;
+   }
+   
+ header .search-bar-toggle{
+      float: right;
+      display: inline-block;
+      Text-align: center;
+      Margin-top: 8px;
+  }
+  
+  header nav{
+      display: block;
+      Position: fixed;
+      Left: -100%;
+      Bottom: 0;
+      Top: 55px;
+      Background-color: rgba(0, 0, 0);
+      Min-width: 80%;
+      Padding: 20px 7%;
+      overflow-y: auto;
+      Transition: all 0.5s;
+  }
+  
+ .header-nav-toggle{
+     left: 0;
+ }
+  
+  header nav li{
+      Padding: 10px 5px;
+  }
+  
+  header nav li a{
+      Color: #cecece;
+      
+  }
+  
+ .user-toggle{
+     Margin-left: 0;
+     Color: #cecece;
+     Padding: 10px 5px;
+ }
+
+ .search-bar-wrap{
+     width: 70%;
+ }
+  
+}

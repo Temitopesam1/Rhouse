@@ -1,0 +1,76 @@
+.main-content .container h3{
+  color: red;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 25px;
+}
+
+.main-content .post-wrapper{
+  display: block;
+  margin-bottom: 50px;
+}
+
+.post-container{
+  display: grid;
+  grid-template-columns: 200px 2fr;
+  column-gap: 25px;
+  padding: 20px 0;
+  border-top: 1px solid #ccc;
+  
+}
+
+.post-description{
+  position: relative;
+}
+.post-description div{
+  position: absolute;
+  bottom: 0;
+}
+
+.post-image img{
+  width: 100%;
+  border-radius: 8px;
+}
+
+.post-description{
+  padding-top: 0;
+}
+
+.container .post-description h3{
+  Font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.post-description p{
+  Font-size: 15px;
+  Margin-top: -1px;
+}
+
+.post-description small{
+  font-size: 12px;
+}
+
+.post-description i{
+  Color: red;
+}
+
+.post-description span{
+  Font-weight: 500;
+  Font-size: 18px;
+  Color: red;
+  
+}
+
+.filter-container{
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.btn-filter{
+  outline: none;
+  border: 1px solid #000;
+  padding: 5px 10px;
+  background-color: transparent;
+}

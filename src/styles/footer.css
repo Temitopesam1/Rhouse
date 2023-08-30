@@ -1,0 +1,42 @@
+footer{
+    Background-color: #000;
+    Color: #cecece;
+    Padding: 20px 5%;
+}
+
+footer p{
+    Text-align: center;
+    Font-weight: 500;
+}
+
+footer ul{
+    Text-align: center;
+}
+
+footer ul li{
+    List-style: none;
+    Display: inline-block;
+    Padding: 0 10px;
+}
+
+footer ul li a{
+    Color: #cecece;
+}
+
+footer ul .logo a{
+    Color: #cecece;
+    font-weight: 600;
+}
+
+@media (max-width: 900px){
+    footer{
+        font-size: 15px;
+        padding: 10px 7%;
+    }
+
+    footer ul li{
+        display: block;
+        text-align: left;
+        padding: 7px 0;
+    }
+}

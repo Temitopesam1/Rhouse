@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="https://kit.fontawesome.com/dad8ebce2d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="src/styles/style.css">
+  <script defer src="src/js/View/signupView.js"></script>
+  <title>Rhouse</title>
+</head>
+<body>
+  <div class="signup-login-container">
+
+    <div class="logo-container">
+      <span>R</span>house
+    </div>
+    <div class="error-msg-container hidden"></div>
+    <div class="form-container signup">
+      <h2>Create Account...</h2>
+      <form class="signup-form form" method="post">
+        <div>
+          <i class="fa-solid fa-user"></i>
+          <input type="text" name="username" placeholder="Username" class="username-el">
+        </div>
+        <div>
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" name="email" placeholder="Email" class="email-el">
+        </div>
+        <div>
+          <i class="fa-solid fa-key"></i>
+          <input type="password" name="password" placeholder="Password" class="password-el-signup">
+        </div>
+        <div>
+          <i class="fa-solid fa-key"></i>
+          <input type="password" name="cPassword" placeholder="Confirm password" class="confirm-password-el">
+        </div>
+        <p class="check-matched"></p>
+        <button type="submit" class="btn-signup">Register</button>
+      </form>
+      <p>Already have an Account? <a href="index.html" class="link login-link">Log in</a></p>
+    </div>
+  </div>
+</body>
+</html>
